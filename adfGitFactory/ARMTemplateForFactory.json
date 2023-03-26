@@ -99,7 +99,6 @@
 						}
 					}
 				],
-				"concurrency": 1,
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
