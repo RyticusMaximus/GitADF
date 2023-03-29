@@ -22,7 +22,11 @@
 		},
 		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filename": {
 			"type": "string",
-			"defaultValue": "@triggerBody().filename"
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filepath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
 		},
 		"tr_queue_new_file_properties_typeProperties_scope": {
 			"type": "string",
@@ -285,6 +289,13 @@
 										"type": "Expression"
 									},
 									"type": "String"
+								},
+								"filePath": {
+									"value": {
+										"value": "@pipeline().parameters.p_filepath",
+										"type": "Expression"
+									},
+									"type": "String"
 								}
 							}
 						},
@@ -300,6 +311,9 @@
 				},
 				"parameters": {
 					"p_filename": {
+						"type": "string"
+					},
+					"p_filepath": {
 						"type": "string"
 					}
 				},
@@ -323,7 +337,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"p_filename": "[parameters('tr_queue_new_file_properties_pl_create_queue_parameters_p_filename')]"
+							"p_filename": "[parameters('tr_queue_new_file_properties_pl_create_queue_parameters_p_filename')]",
+							"p_filepath": "[parameters('tr_queue_new_file_properties_pl_create_queue_parameters_p_filepath')]"
 						}
 					}
 				],

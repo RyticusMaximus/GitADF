@@ -15,7 +15,10 @@
 			"value": "https://gitsqlServer.vault.azure.net/"
 		},
 		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filename": {
-			"value": "@triggerBody().filename"
+			"value": "@triggerBody().fileName"
+		},
+		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filepath": {
+			"value": "@triggerBody().folderPath"
 		},
 		"tr_queue_new_file_properties_typeProperties_scope": {
 			"value": "/subscriptions/27036a7e-7c97-4885-8a94-0611db61e7b0/resourceGroups/adf-git/providers/Microsoft.Storage/storageAccounts/adfgitstorage"
