@@ -8,6 +8,18 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=adfgitsqlserver.database.windows.net;Initial Catalog=adfgitdatabase;User ID=adfgitsqladmin"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://gitsqlServer.vault.azure.net/"
+		},
+		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filename": {
+			"value": "@triggerBody().filename"
+		},
+		"tr_queue_new_file_properties_typeProperties_scope": {
+			"value": "/subscriptions/27036a7e-7c97-4885-8a94-0611db61e7b0/resourceGroups/adf-git/providers/Microsoft.Storage/storageAccounts/adfgitstorage"
+		},
 		"containerUri": {
 			"value": ""
 		},

@@ -11,6 +11,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=adfgitsqlserver.database.windows.net;Initial Catalog=adfgitdatabase;User ID=adfgitsqladmin"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://gitsqlServer.vault.azure.net/"
+		},
+		"tr_queue_new_file_properties_pl_create_queue_parameters_p_filename": {
+			"type": "string",
+			"defaultValue": "@triggerBody().filename"
+		},
+		"tr_queue_new_file_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/27036a7e-7c97-4885-8a94-0611db61e7b0/resourceGroups/adf-git/providers/Microsoft.Storage/storageAccounts/adfgitstorage"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -40,6 +57,18 @@
 					},
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
+					},
+					"AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"tr_queue_new_file_properties_pl_create_queue_parameters_p_filename": {
+						"value": "[parameters('tr_queue_new_file_properties_pl_create_queue_parameters_p_filename')]"
+					},
+					"tr_queue_new_file_properties_typeProperties_scope": {
+						"value": "[parameters('tr_queue_new_file_properties_typeProperties_scope')]"
 					}
 				}
 			},
