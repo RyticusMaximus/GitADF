@@ -23,6 +23,12 @@
 								"type": "Expression"
 							},
 							"type": "String"
+						},
+						"filePath": {
+							"value": {
+								"value": "@pipeline().parameters.p_filepath",
+								"type": "Expression"
+							}
 						}
 					}
 				},
@@ -34,6 +40,9 @@
 		],
 		"parameters": {
 			"p_filename": {
+				"type": "string"
+			},
+			"p_filepath": {
 				"type": "string"
 			}
 		},
