@@ -28,7 +28,8 @@
 							"value": {
 								"value": "@pipeline().parameters.p_filepath",
 								"type": "Expression"
-							}
+							},
+							"type": "String"
 						}
 					}
 				},
