@@ -1,0 +1,62 @@
+{
+	"name": "pl_next_queue",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get_file_for_queue",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[NextFile]",
+						"storedProcedureParameters": {
+							"fileToMove": {
+								"type": "String"
+							},
+							"newfileToMove": {
+								"type": "String"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "sql_person",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set original file name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get_file_for_queue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			}
+		],
+		"parameters": {
+			"original_file_name": {
+				"type": "string"
+			},
+			"new_file_name": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
