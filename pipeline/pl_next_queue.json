@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get_file_for_queue",
+				"name": "Lookup1",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,15 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[NextFile]",
-						"storedProcedureParameters": {
-							"fileToMove": {
-								"type": "String"
-							},
-							"newfileToMove": {
-								"type": "String"
-							}
-						},
+						"sqlReaderStoredProcedureName": "[dbo].[NextFile2]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -40,21 +32,50 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Get_file_for_queue",
+						"activity": "Lookup1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_original_file",
+					"value": {
+						"value": "@activity('Lookup1').output.firstRow.fileToMove",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set ne filename",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_original_file",
+					"value": {
+						"value": "@activity('Lookup1').output.firstRow.newfileToMove",
+						"type": "Expression"
+					}
+				}
 			}
 		],
-		"parameters": {
-			"original_file_name": {
-				"type": "string"
+		"variables": {
+			"v_original_file": {
+				"type": "String",
+				"defaultValue": "empty"
 			},
-			"new_file_name": {
-				"type": "string"
+			"v_new_file": {
+				"type": "String",
+				"defaultValue": "empty"
 			}
 		},
 		"annotations": []
