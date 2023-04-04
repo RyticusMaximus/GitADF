@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "get next file for queue",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -32,7 +32,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "get next file for queue",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -42,17 +42,17 @@
 				"typeProperties": {
 					"variableName": "v_original_file",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow.fileToMove",
+						"value": "@activity('get next file for queue').output.firstRow.fileToMove",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Set ne filename",
+				"name": "Set new filename",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "get next file for queue",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -62,10 +62,97 @@
 				"typeProperties": {
 					"variableName": "v_new_file",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow.newfileToMove",
+						"value": "@activity('get next file for queue').output.firstRow.newfileToMove",
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "create file in blob storage",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set original file name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set new filename",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_orig_file",
+						"type": "DatasetReference",
+						"parameters": {
+							"blobcontainer": "input",
+							"filepath": "export",
+							"origfilename": {
+								"value": "@variables('v_original_file')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_new_file",
+						"type": "DatasetReference",
+						"parameters": {
+							"blobcontainer": "input",
+							"filepath": "export",
+							"newfilename": {
+								"value": "@variables('v_new_file')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"variables": {
