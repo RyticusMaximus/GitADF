@@ -17,7 +17,7 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/input/blobs/export/success",
+			"blobPathBeginsWith": "/input/blobs/export/success.",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/27036a7e-7c97-4885-8a94-0611db61e7b0/resourceGroups/adf-git/providers/Microsoft.Storage/storageAccounts/adfgitstorage",
 			"events": [
