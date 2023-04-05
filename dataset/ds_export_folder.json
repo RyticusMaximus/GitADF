@@ -9,6 +9,9 @@
 			"container": {
 				"type": "string",
 				"defaultValue": "export"
+			},
+			"folder": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
