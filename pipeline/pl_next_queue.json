@@ -88,7 +88,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@if(equals(variables('v_new_file'),'Empty'),true,false)",
+						"value": "@if(equals(variables('v_new_file'),'empty'),true,false)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
