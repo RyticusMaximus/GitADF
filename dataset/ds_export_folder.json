@@ -19,6 +19,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "person.csv",
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
 				"container": {
 					"value": "@dataset().container",
 					"type": "Expression"
