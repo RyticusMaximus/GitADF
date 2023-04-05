@@ -106,7 +106,7 @@
 									"parameters": {
 										"container": "export",
 										"folder": {
-											"value": "@item()",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
