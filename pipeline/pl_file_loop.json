@@ -120,7 +120,7 @@
 										"container": "export",
 										"folder": "merged",
 										"filename": {
-											"value": "@concat(item().name,'person.csv')",
+											"value": "@concat(item().name,pipeline().parameters.table)",
 											"type": "Expression"
 										}
 									}
@@ -155,7 +155,10 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFileName": "*person.csv",
+							"wildcardFileName": {
+								"value": "@concat('*',pipeline().parameters.table)",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -201,22 +204,19 @@
 						"parameters": {
 							"container": "export",
 							"folder": "merged",
-							"filename": "person.csv"
+							"filename": {
+								"value": "@pipeline().parameters.table",
+								"type": "Expression"
+							}
 						}
 					}
 				]
 			}
 		],
-		"variables": {
-			"theitem": {
-				"type": "String"
-			},
-			"file_names": {
-				"type": "Array",
-				"defaultValue": [
-					"affiliation",
-					"assessment"
-				]
+		"parameters": {
+			"table": {
+				"type": "string",
+				"defaultValue": "person.csv"
 			}
 		},
 		"annotations": []
