@@ -53,7 +53,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "move files",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -114,22 +114,109 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_export_folder",
+									"referenceName": "ds_export_folder_files",
 									"type": "DatasetReference",
 									"parameters": {
 										"container": "export",
-										"folder": "merged"
+										"folder": "merged",
+										"filename": {
+											"value": "@concat(item().name,'person.csv')",
+											"type": "Expression"
+										}
 									}
 								}
 							]
 						}
 					]
 				}
+			},
+			{
+				"name": "merge files",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*person.csv",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_export_folder",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "export",
+							"folder": "merged"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_export_folder_files",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "export",
+							"folder": "merged",
+							"filename": "person.csv"
+						}
+					}
+				]
 			}
 		],
 		"variables": {
 			"theitem": {
 				"type": "String"
+			},
+			"file_names": {
+				"type": "Array",
+				"defaultValue": [
+					"affiliation",
+					"assessment"
+				]
 			}
 		},
 		"annotations": []
