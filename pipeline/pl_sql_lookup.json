@@ -1,0 +1,67 @@
+{
+	"name": "pl_sql_lookup",
+	"properties": {
+		"activities": [
+			{
+				"name": "make list",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "Select SourceSystemStringList =\n\tcase when '@{pipeline().parameters.sourceList}' = '*'  then 'all'\n\telse STRING_AGG( name, ',') \n\tend\nfrom dbo.Customer a\nwhere exists \n(select * from \n STRING_SPLIT('@{pipeline().parameters.sourceList}',',') AS SS\n where A.id = SS.Value\n) OR '@{pipeline().parameters.sourceList}' = '*';",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "sql_person",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "get the name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "make list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "whatisthename",
+					"value": {
+						"value": "@activity('make list').output.firstRow.SourceSystemStringList",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"sourceList": {
+				"type": "string",
+				"defaultValue": "2,1,5"
+			}
+		},
+		"variables": {
+			"whatisthename": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
